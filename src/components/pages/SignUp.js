@@ -94,9 +94,11 @@ export default function SignUp() {
 
     const doesUserExist = async (username) => {
         try {
-            // const response = await axios.get(`/users/${username}`);
-            let data = JSON.stringify({ "username": username });
-            const response = await axios.get(`/user`, data, { headers: { 'Content-Type': 'application/json' } });
+            const response = await axios.get(`/users/${username}`);
+            //let data = JSON.stringify({ "username": username });
+            //const response = await axios.get(`/user`, data, { headers: { 'Content-Type': 'application/json' } });
+            //let data = { username: username };
+            //const response = await axios.get(`/user`, data);
             console.log(response);
             return response.data.length > 0;
         } catch (err) {
@@ -105,12 +107,13 @@ export default function SignUp() {
         }
     };
 
-    const createUser = async (user, pwd) => {
+    const createUser = async (username, password) => {
         try {
             const date = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() };
             const dateStr = `${date.year}-${date.month}-${date.day}`;
-            const body = { username: user, password: pwd, email: '', role: 0, date: dateStr };
-            const response = await axios.post('/users', body);
+            const body = JSON.stringify({ "username": username, "password": password, "email": '', "role": 0, "date": dateStr });
+            const headers = { 'Content-Type': 'application/json' };
+            const response = await axios.post('/users', body, { headers: headers });
             console.log(response);
         } catch (err) {
             console.error(err);
